@@ -11,6 +11,12 @@ JavaScript
 Database:
 SQLite3
 
+References:
+
+https://youtu.be/wzZiONbtwiA
+https://youtu.be/qwE9TFNub84
+https://youtu.be/VxOsCKMStuw
+
 How to Run the application:
 
 Prerequisites:
@@ -29,10 +35,14 @@ Instructions:
 9. If the user is new, then he will need to go to the registration page by clicking on the "register" option.
 10. After that the user will see the registration page and will require to provide valid information and press the "register" button.
 11. After that the user will be registered and will be forwarded to the homepage.
-12. If the user want to log out of the system he/she will need to click the "logout" button and it will lead the user out of the system.
+12. If the user would like to make a tweet, they will need to put what they want to say in the textbox and press the submit button.
+ If the user want to log out of the system he/she will need to click the "logout" button and it will lead the user out of the system.
 
 
 Add information here everytime you add something in the master branch or coommitting something.
 
 03/03/20- Rayhan
 Just added the ".travis.yml" file in the repository.
+
+03/21/20 - Kane
+Added files with tweet function to Kane's branch
