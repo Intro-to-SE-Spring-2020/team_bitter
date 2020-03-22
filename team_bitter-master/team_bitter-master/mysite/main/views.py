@@ -33,7 +33,9 @@ class HomePageView(TemplateView):
                         
                         content = form.cleaned_data['tweet_content']
                         form = TweetForm()
+                        messages.info(request, f"Tweet sent")
                         return redirect('main:homepage')
+                        
 
                 args = {'form': form, 'content': content}
                 return render(request, self.template_name, args)

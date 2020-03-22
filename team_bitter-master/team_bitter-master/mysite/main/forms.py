@@ -25,7 +25,8 @@ class NewUserForm(UserCreationForm):
 
 
 class TweetForm(forms.ModelForm):
-    tweet_content = forms.CharField()
+    tweet_content = forms.CharField(max_length = 280)
+
 
     class Meta:
        model = Tweet
@@ -34,16 +35,9 @@ class TweetForm(forms.ModelForm):
           }
        fields = ('tweet_content',)
 
-    def tweet_parameters(self):
-        content = self.cleaned_data['tweet']
+        
 
-        if len(content) > 280:
-            raise ValidationError(_('Too many characters'))
-
-        if len(content) <= 0:
-            raise ValidationError(_('Please enter a tweet'))
-
-        return content
+    
 
    
         

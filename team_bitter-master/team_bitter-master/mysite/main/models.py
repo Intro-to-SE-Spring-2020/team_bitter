@@ -13,7 +13,6 @@ class Tutorial(models.Model):
         return self.tutorial_title
     
 class Tweet(models.Model):
-    #tweet_id = models.AutoField(primary_key = True)
     tweet_content = models.CharField(max_length = 280)
     tweet_published = models.DateTimeField('date published', default=datetime.now)
     #user = models.ForeignKey(User)
