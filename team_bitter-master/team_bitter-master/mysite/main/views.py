@@ -12,17 +12,21 @@ from .forms import TweetForm
 
 
 # Create your views here.
+
+#This is a class for the homepage. Tweets will show up here.
 class HomePageView(TemplateView):
         template_name = 'main/home.html'
 
-        def get(self, request):
+        #This function will get the information from the database and user.
+        def get_tweet(self, request):
                 form = TweetForm()
                 tweets = Tweet.objects.all()
 
                 args = {'form': form, 'tweets': tweets}
                 return render(request, self.template_name, args)
-
-        def post(self, request):
+        
+        #This function will display the information being retrieved.
+        def post_tweet(self, request):
                 form = TweetForm(request.POST)
                 if form.is_valid():
 
