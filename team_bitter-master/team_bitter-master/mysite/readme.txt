@@ -16,6 +16,7 @@ References:
 https://youtu.be/wzZiONbtwiA
 https://youtu.be/qwE9TFNub84
 https://youtu.be/VxOsCKMStuw
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing
 
 How to Run the application:
 
@@ -36,7 +37,7 @@ Instructions:
 10. After that the user will see the registration page and will require to provide valid information and press the "register" button.
 11. After that the user will be registered and will be forwarded to the homepage.
 12. If the user would like to make a tweet, they will need to put what they want to say in the textbox and press the submit button.
- If the user want to log out of the system he/she will need to click the "logout" button and it will lead the user out of the system.
+13. If the user want to log out of the system he/she will need to click the "logout" button and it will lead the user out of the system.
 
 
 Add information here everytime you add something in the master branch or coommitting something.
@@ -46,3 +47,6 @@ Just added the ".travis.yml" file in the repository.
 
 03/21/20 - Kane
 Added files with tweet function to Kane's branch
+
+03/29/20 - Kane
+Added test cases to the tweet functionality.

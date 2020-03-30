@@ -19,6 +19,7 @@ class TweetAdmin(admin.ModelAdmin):
     fields = [
               "tweet_content",
               "tweet_published",
+              #"user",
               ]
 
 # Register your models here.

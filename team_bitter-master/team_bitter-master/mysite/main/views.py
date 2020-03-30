@@ -18,7 +18,7 @@ class HomePageView(TemplateView):
         template_name = 'main/home.html'
 
         #This function will get the information from the database and user.
-        def get_tweet(self, request):
+        def get(self, request):
                 form = TweetForm()
                 tweets = Tweet.objects.all()
 
@@ -26,7 +26,7 @@ class HomePageView(TemplateView):
                 return render(request, self.template_name, args)
         
         #This function will display the information being retrieved.
-        def post_tweet(self, request):
+        def post(self, request):
                 form = TweetForm(request.POST)
                 if form.is_valid():
 

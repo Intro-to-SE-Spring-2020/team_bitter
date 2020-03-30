@@ -26,7 +26,7 @@ class NewUserForm(UserCreationForm):
 #This class creates a form for the user to input a tweet to post on the homepage.
 class TweetForm(forms.ModelForm):
     tweet_content = forms.CharField(max_length = 280)
-
+    
 
     class Meta:
        model = Tweet
@@ -34,6 +34,8 @@ class TweetForm(forms.ModelForm):
           "tweet_content": forms.TextInput()
           }
        fields = ('tweet_content',)
+
+    
 
         
 
