@@ -1,10 +1,17 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .models import Tweet
 from .forms import TweetForm
 from django.urls import reverse
 from django.contrib.auth.models import User
+from main.models import Tutorial
 from datetime import datetime
+import json
 # Create your tests here.
+
+
+
+
+
 
 
 class Tweet_Url_test(TestCase):
@@ -23,5 +30,8 @@ class Tweet_Url_test(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/home.html')
 
-
-        
+	def test_register(self):
+		client = Client()
+		response = client.get(reverse('main:register'))
+		self.assertEquals(response.status_code, 200)
+		self.assertTemplateUsed(response, 'main/register.html')   
