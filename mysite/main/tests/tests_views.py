@@ -29,9 +29,9 @@ class Tweet_Url_test(TestCase):
         response = self.client.get(reverse('main:homepage'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/home.html')
-
-	def test_register(self):
-		client = Client()
-		response = client.get(reverse('main:register'))
-		self.assertEquals(response.status_code, 200)
+    
+    def test_register(self):
+	client = Client()
+	response = client.get(reverse('main:register'))
+	self.assertEquals(response.status_code, 200)
 		self.assertTemplateUsed(response, 'main/register.html')   
