@@ -6,13 +6,8 @@ from django.contrib.auth.models import User
 from main.models import Tutorial
 from datetime import datetime
 import json
+
 # Create your tests here.
-
-
-
-
-
-
 
 class Tweet_Url_test(TestCase):
 
