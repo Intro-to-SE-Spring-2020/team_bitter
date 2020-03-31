@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from .models import Tweet
+from datetime import datetime
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -19,3 +22,24 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+#This class creates a form for the user to input a tweet to post on the homepage.
+class TweetForm(forms.ModelForm):
+    tweet_content = forms.CharField(max_length = 280)
+    
+
+    class Meta:
+       model = Tweet
+       widgets={
+          "tweet_content": forms.TextInput()
+          }
+       fields = ('tweet_content',)
+
+    
+
+        
+
+    
+
+   
+        

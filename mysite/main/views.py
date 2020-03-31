@@ -1,16 +1,48 @@
 from django.shortcuts import render, redirect
 from .models import Tutorial
+from .models import Tweet
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.views.generic import TemplateView
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from .forms import NewUserForm
+from .forms import TweetForm
+
+
 
 
 # Create your views here.
-def homepage(request):
-	return render(request = request,
-		template_name='main/home.html',
-		context = {"tutorials":Tutorial.objects.all})     
+
+#This is a class for the homepage. Tweets will show up here.
+class HomePageView(TemplateView):
+        template_name = 'main/home.html'
+
+        #This function will get the information from the database and user.
+        def get(self, request):
+                form = TweetForm()
+                tweets = Tweet.objects.all()
+
+                args = {'form': form, 'tweets': tweets}
+                return render(request, self.template_name, args)
+        
+        #This function will display the information being retrieved.
+        def post(self, request):
+                form = TweetForm(request.POST)
+                if form.is_valid():
+
+                        tweet = form.save(commit=False)
+                        tweet.user = request.user
+                        tweet.save()
+
+                        
+                        content = form.cleaned_data['tweet_content']
+                        form = TweetForm()
+                        messages.info(request, f"Tweet sent")
+                        return redirect('main:homepage')
+                        
+
+                args = {'form': form, 'content': content}
+                return render(request, self.template_name, args)
 
 
 def register(request):
