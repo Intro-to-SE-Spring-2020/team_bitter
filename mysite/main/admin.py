@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Tutorial
-from .models import Tweet
+from .models import Tutorial,Tweet,User,UserRelationship,UserBlocked
+
 from tinymce.widgets import TinyMCE
 from django.db import models
 
@@ -25,3 +25,5 @@ class TweetAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(Tweet, TweetAdmin)
+admin.site.register(UserRelationship)
+admin.site.register(UserBlocked)

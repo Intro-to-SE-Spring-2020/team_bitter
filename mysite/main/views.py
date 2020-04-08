@@ -1,13 +1,28 @@
 from django.shortcuts import render, redirect
-from .models import Tutorial
+from .models import Tutorial,UserRelationship,UserBlocked
 from .models import Tweet
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.views.generic import TemplateView
+from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from .forms import NewUserForm
 from .forms import TweetForm
+from .forms import NewUserForm,AddFriendForm,DeleteFriendForm,DeleteFriendForm,BlockFriendForm,UnBlockFriendForm
 
+def friendsOf(username):
+    friends = UserRelationship.objects.filter(selfname__exact=username)
+    friendList = ''
+    for friend in friends:
+        friendList = friendList + '\n' + '\'' + friend.friendname + '\''
+    return friendList
+
+def BeBlockedBy(username):
+    friends = UserBlocked.objects.filter(selfname__exact=username)
+    friendList = ''
+    for friend in friends:
+        friendList = friendList + '\n' + '\'' + friend.blockname + '\''
+    return friendList
 
 
 
@@ -93,3 +108,111 @@ def login_request(request):
     return render(request = request,
                     template_name = "main/login.html",
                     context={"form":form})
+def account(request):
+    username='cipherash'
+    friendList = friendsOf(username)
+    blockList = BeBlockedBy(username)
+    if request.method == 'POST':
+        if 'add' in request.POST:
+            aff = AddFriendForm(request.POST)
+            if aff.is_valid():
+                friendWaitToAdd = aff.cleaned_data['friendWaitToAdd']
+                isRelationExist = UserRelationship.objects.filter(selfname__exact=username,friendname__exact=friendWaitToAdd)
+                isfFiendWaitToAddExist = User.objects.filter(username__exact=friendWaitToAdd)
+                if not isfFiendWaitToAddExist:
+                    context = {'error': 'friendWaitToAdd is not exist', 'username': username, 'friendList': friendList,
+                               'blockList': blockList}
+                    return render(request, 'main/account.html', context)
+                else:
+                    if isRelationExist:
+                        context = {'error1': request.method, 'error': 'friendWaitToAdd is  already your friend',
+                                   'username': username, 'friendList': friendList, 'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+                    else:
+                        UserRelationship.objects.create(selfname=username, friendname=friendWaitToAdd)
+                        friendList = friendsOf(username)
+                        context = {'error': 'done', 'username': username, 'friendList': friendList,
+                                   'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+            else:
+                context = {'username': username, 'friendList': friendList, 'blockList': blockList}
+                return render(request, 'main/account.html', context)
+
+        elif 'delete' in request.POST:
+            dff = DeleteFriendForm(request.POST)
+            if dff.is_valid():
+                friendWaitToDelete = dff.cleaned_data['friendWaitToDelete']
+                isRelationExist = UserRelationship.objects.filter(selfname__exact=username,
+                                                                  friendname__exact=friendWaitToDelete)
+                isfFiendWaitToDelete = User.objects.filter(username__exact=friendWaitToDelete)
+                if not isfFiendWaitToDelete:
+                    context = {'error': 'friendWaitToDelete is not exist', 'username': username,
+                               'friendList': friendList, 'blockList': blockList}
+                    return render(request, 'main/account.html', context)
+                else:
+                    if not isRelationExist:
+                        context = {'error': 'friendWaitToDelete is not your friend', 'username': username,
+                                   'friendList': friendList, 'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+                    else:
+                        UserRelationship.objects.filter(selfname=username, friendname=friendWaitToDelete).delete()
+                        friends = UserRelationship.objects.filter(selfname__exact=username)
+                        friendList = ''
+                        for friend in friends:
+                            friendList = friendList + '\n' + '\'' + friend.friendname + '\''
+                        context = {'error': 'done', 'username': username, 'friendList': friendList,
+                                   'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+            else:
+                context = {'username': username, 'friendList': friendList, 'blockList': blockList}
+                return render(request, 'main/account.html', context)
+        elif 'block' in request.POST:
+            bff = BlockFriendForm(request.POST)
+            if bff.is_valid():
+                friendWaitToBlock = bff.cleaned_data['friendWaitToBlock']
+                isRelationExist = UserBlocked.objects.filter(selfname__exact=username,
+                                                             blockname__exact=friendWaitToBlock)
+                isfFiendWaitToBlock = User.objects.filter(username__exact=friendWaitToBlock)
+                if not isfFiendWaitToBlock:
+                    context = {'error': 'friendWaitToBlock is not exist', 'username': username,
+                               'friendList': friendList, 'blockList': blockList}
+                    return render(request, 'main/account.html', context)
+                else:
+                    if isRelationExist:
+                        context = {'error': 'already blocked', 'username': username, 'friendList': friendList,'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+                    else:
+                        UserBlocked.objects.create(selfname=username, blockname=friendWaitToBlock)
+                        blockList = BeBlockedBy(username)
+                        context = {'error': 'done', 'username': username, 'friendList': friendList,
+                                   'blockList': blockList}
+                        return render(request, 'main/account.html', context)
+            else:
+                context = {'username': username, 'friendList': friendList, 'blockList': blockList}
+                return render(request, 'main/account.html', context)
+        elif 'unblock' in request.POST:
+                ubf=UnBlockFriendForm(request.POST)
+                if ubf.is_valid():
+                        friendWaitToUnBlock = ubf.cleaned_data['friendWaitToUnBlock']
+                        isRelationExist = UserBlocked.objects.filter(selfname__exact=username,
+                                                             blockname__exact=friendWaitToUnBlock)
+                        isfFiendWaitToUnBlock = User.objects.filter(username__exact=friendWaitToUnBlock)
+                        if not isfFiendWaitToUnBlock:
+                                context = {'error': 'friendWaitToUnblock is not exist', 'username': username,'friendList': friendList, 'blockList': blockList}
+                                return render(request, 'main/account.html', context)
+                        else:
+                                if not isRelationExist:
+                                        context = {'error': 'not in your block list', 'username': username, 'friendList': friendList,'blockList': blockList}
+                                        return render(request, 'main/account.html', context)
+                                else:
+                                        UserBlocked.objects.filter(selfname=username, blockname=friendWaitToUnBlock).delete()
+                                        blockList = BeBlockedBy(username)
+                                        context = {'error': 'done', 'username': username, 'friendList': friendList,'blockList': blockList}
+                                        return render(request, 'main/account.html', context)
+                else:
+                        context = {'username': username, 'friendList': friendList, 'blockList': blockList}
+                        return render(request, 'main/account.html', context)        
+                
+    else:
+        context = {'username': username, 'friendList': friendList, 'blockList': blockList}
+        return render(request, 'main/account.html', context)

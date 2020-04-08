@@ -1,0 +1,35 @@
+{% extends 'main/header.html' %}
+
+{% block content %}
+	<br>
+        <form method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ error }}
+         <p><label>Add  Friend：</label><input type="text" name="friendWaitToAdd" /></p>
+        <input type="submit" name="add" value = "add" />
+    </form>
+
+    <form method = 'POST'  enctype="multipart/form-data">
+        {% csrf_token %}
+         <p><label>delete  Friend：</label><input type="text" name="friendWaitToDelete" /></p>
+        <input type="submit" name="delete" value = "delete" />
+    </form>
+
+    <form method = 'POST'  enctype="multipart/form-data">
+        {% csrf_token %}
+         <p><label>block ：</label><input type="text" name="friendWaitToBlock" /></p>
+        <input type="submit" name="block" value = "block" />
+    </form>
+
+    <form method = 'POST'  enctype="multipart/form-data">
+        {% csrf_token %}
+         <p><label>unblock ：</label><input type="text" name="friendWaitToUnBlock" /></p>
+        <input type="submit" name="unblock" value = "unblock" />
+    </form>
+    friend list：{{friendList}}
+    block list：{{blockList}}
+    </form>
+<br>
+<a href="/homepage" target="blank"><strong>return to homepage</strong></a>!
+
+{% endblock %}

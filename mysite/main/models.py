@@ -21,3 +21,9 @@ class Tweet(models.Model):
                                            
     def __str__(self):
         return self.tweet_content
+class UserRelationship(models.Model):
+    selfname=models.CharField(max_length=50)
+    friendname=models.CharField(max_length=50)
+class UserBlocked(models.Model):
+    selfname=models.CharField(max_length=50)
+    blockname=models.CharField(max_length=50)
