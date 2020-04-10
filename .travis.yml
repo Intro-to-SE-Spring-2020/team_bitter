@@ -5,9 +5,9 @@ python: # => 3
   - "3.7"
   - "3.8"
 services: # => 4
-  - sqlite3
+  - sqlite
 env: # => 5
-  -DJANGO=1.8 DB=sqlite3
+  -DJANGO=1.8 DB=sqlite
 install: # => 6
   - pip install -r requirements.txt
 script: # => 7
