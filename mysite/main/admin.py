@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Tutorial
 from .models import Tweet
-from tinymce.widgets import TinyMCE
 from django.db import models
 
 
@@ -11,9 +10,6 @@ class TutorialAdmin(admin.ModelAdmin):
               "tutorial_content"
     ]
 
-    formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()},
-        }
 
 class TweetAdmin(admin.ModelAdmin):
     fields = [
