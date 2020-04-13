@@ -5,14 +5,14 @@
         <form method = 'POST' enctype="multipart/form-data">
         {% csrf_token %}
         {{ error }}
-         <p><label>Add  Friend：</label><input type="text" name="friendWaitToAdd" /></p>
-        <input type="submit" name="add" value = "add" />
+         <p><label>follow ：</label><input type="text" name="friendWaitToAdd" /></p>
+        <input type="submit" name="add" value = "follow" />
     </form>
 
     <form method = 'POST'  enctype="multipart/form-data">
         {% csrf_token %}
-         <p><label>delete  Friend：</label><input type="text" name="friendWaitToDelete" /></p>
-        <input type="submit" name="delete" value = "delete" />
+         <p><label>unfollow ：</label><input type="text" name="friendWaitToDelete" /></p>
+        <input type="submit" name="delete" value = "unfollow" />
     </form>
 
     <form method = 'POST'  enctype="multipart/form-data">

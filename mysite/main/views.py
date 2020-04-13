@@ -9,12 +9,19 @@ from django.contrib import messages
 from .forms import NewUserForm
 from .forms import TweetForm
 from .forms import NewUserForm,AddFriendForm,DeleteFriendForm,DeleteFriendForm,BlockFriendForm,UnBlockFriendForm
-
+global user_now
+user_now='null'
 def friendsOf(username):
     friends = UserRelationship.objects.filter(selfname__exact=username)
     friendList = ''
     for friend in friends:
         friendList = friendList + '\n' + '\'' + friend.friendname + '\''
+    return friendList
+def friendlistOf(username):
+    friends = UserRelationship.objects.filter(selfname__exact=username)
+    friendList = []
+    for friend in friends:
+        friendList.append(friend.friendname)
     return friendList
 
 def BeBlockedBy(username):
@@ -24,20 +31,35 @@ def BeBlockedBy(username):
         friendList = friendList + '\n' + '\'' + friend.blockname + '\''
     return friendList
 
-
+def BlockListBy(username):
+    friends = UserBlocked.objects.filter(selfname__exact=username)
+    friendList = []
+    for friend in friends:
+        friendList.append(friend.blockname)
+    return friendList
 
 # Create your views here.
 
 #This is a class for the homepage. Tweets will show up here.
 class HomePageView(TemplateView):
+        
+        
+        #blist=BeBlockedBy(username)
         template_name = 'main/home.html'
 
         #This function will get the information from the database and user.
         def get(self, request):
+                global user_now
+                username=user_now
                 form = TweetForm()
+                flist=friendlistOf(username)
+                blist=BlockListBy(username)
                 tweets = Tweet.objects.all()
-
-                args = {'form': form, 'tweets': tweets}
+                new_tweets=[]
+                for tweet in tweets:
+                    if str(tweet.user)==username or (str(tweet.user)in flist and str(tweet.user)not in blist):
+                        new_tweets.append(tweet)
+                args = {'form': form, 'tweets': new_tweets}
                 return render(request, self.template_name, args)
         
         #This function will display the information being retrieved.
@@ -90,6 +112,7 @@ def logout_request(request):
 
 
 def login_request(request):
+    global user_now
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -99,6 +122,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
+                user_now=username
                 return redirect('/homepage')
             else:
                 messages.error(request, "Invalid username or password.")
@@ -109,7 +133,8 @@ def login_request(request):
                     template_name = "main/login.html",
                     context={"form":form})
 def account(request):
-    username='cipherash'
+    global user_now
+    username=user_now
     friendList = friendsOf(username)
     blockList = BeBlockedBy(username)
     if request.method == 'POST':
