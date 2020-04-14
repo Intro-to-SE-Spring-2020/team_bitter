@@ -1,26 +1,14 @@
 from django.test import TestCase
 from main.forms import NewUserForm
 from django.contrib.auth.forms import AuthenticationForm	
-from .models import Tweet	
-from .forms import TweetForm	
+from main.models import Tweet	
+from main.forms import TweetForm	
 from django.urls import reverse	
 
 # Create your tests here.	
 
 class TweetFormTest(TestCase):	
-
-    def test_tweet_form(self):	
-        form = TweetForm({	
-            'tweet_content': "This is my first Tweet",	
-            }, )	
-        self.assertTrue(form.is_valid())	
-        tweet = form.save()	
-        self.assertEqual(tweet.tweet_content, 'This is my first Tweet')	
-
-    def test_empty_tweet_form(self):	
-        form = TweetForm({},)	
-        self.assertFalse(form.is_valid())
-
+	
 	def test_new_user_form_valid_data(self):
 		form = NewUserForm(data={
 			'username': 'newuser',
