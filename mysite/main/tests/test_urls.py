@@ -22,7 +22,8 @@ class TestUrls(SimpleTestCase):
 	def test_register_url_is_resolved(self):
 		url = reverse('main:register')
 		self.assertEquals(resolve(url).func,register)
-
-
+	def test_account_url_is_resolved(self):
+		url = reverse('main:account')
+		self.assertEquals(resolve(url).func,account)
 
 		

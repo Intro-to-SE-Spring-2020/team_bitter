@@ -3,7 +3,7 @@ from .models import Tweet
 from .forms import TweetForm
 from django.urls import reverse
 from django.contrib.auth.models import User
-from main.models import Tutorial
+from main.models import Tutorial,UserBlocked,UserBlocked
 from datetime import datetime
 import json
 
@@ -29,4 +29,7 @@ class Tweet_Url_test(TestCase):
 	client = Client()
 	response = client.get(reverse('main:register'))
 	self.assertEquals(response.status_code, 200)
-		self.assertTemplateUsed(response, 'main/register.html')   
+		self.assertTemplateUsed(response, 'main/register.html')
+    def test_account(self):
+        response = self.client.get(reverse('main:account'))
+        self.assertEqual(response.status_code, 200)
