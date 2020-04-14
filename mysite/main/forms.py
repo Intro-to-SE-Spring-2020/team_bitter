@@ -5,6 +5,18 @@ from django.contrib.auth.models import User
 from .models import Tweet
 from datetime import datetime
 
+class AddFriendForm(forms.Form):
+    friendWaitToAdd = forms.CharField(label='friendWaitToAdd', max_length=100)
+
+class DeleteFriendForm(forms.Form):
+    friendWaitToDelete = forms.CharField(label='friendWaitToDelete', max_length=100)
+
+class BlockFriendForm(forms.Form):
+    friendWaitToBlock = forms.CharField(label='friendWaitToDelete', max_length=100)  
+
+class UnBlockFriendForm(forms.Form):
+    friendWaitToUnBlock = forms.CharField(label='friendWaitToUnblock', max_length=100)        
+
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30)
@@ -34,12 +46,6 @@ class TweetForm(forms.ModelForm):
           "tweet_content": forms.TextInput()
           }
        fields = ('tweet_content',)
-
-    
-
-        
-
-    
 
    
         
