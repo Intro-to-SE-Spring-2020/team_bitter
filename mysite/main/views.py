@@ -10,6 +10,8 @@ from .forms import NewUserForm
 from .forms import TweetForm
 from .forms import NewUserForm,AddFriendForm,DeleteFriendForm,DeleteFriendForm,BlockFriendForm,UnBlockFriendForm
 global user_now
+
+#some required functions to be used in the HomePageView class
 user_now='null'
 def friendsOf(username):
     friends = UserRelationship.objects.filter(selfname__exact=username)
@@ -44,42 +46,42 @@ def BlockListBy(username):
 class HomePageView(TemplateView):
         
         
-        #blist=BeBlockedBy(username)
-        template_name = 'main/home.html'
+    #blist=BeBlockedBy(username)
+    template_name = 'main/home.html'
 
-        #This function will get the information from the database and user.
-        def get(self, request):
-                global user_now
-                username=user_now
-                form = TweetForm()
-                flist=friendlistOf(username)
-                blist=BlockListBy(username)
-                tweets = Tweet.objects.all()
-                new_tweets=[]
-                for tweet in tweets:
-                    if str(tweet.user)==username or (str(tweet.user)in flist and str(tweet.user)not in blist):
-                        new_tweets.append(tweet)
-                args = {'form': form, 'tweets': new_tweets}
-                return render(request, self.template_name, args)
+    #This function will get the information from the database and user.
+    def get(self, request):
+        global user_now
+        username=user_now
+        form = TweetForm()
+        flist=friendlistOf(username)
+        blist=BlockListBy(username)
+        tweets = Tweet.objects.all()
+        new_tweets=[]
+        for tweet in tweets:
+            if str(tweet.user)==username or (str(tweet.user)in flist and str(tweet.user)not in blist):
+                new_tweets.append(tweet)
+        args = {'form': form, 'tweets': new_tweets}
+        return render(request, self.template_name, args)
         
         #This function will display the information being retrieved.
-        def post(self, request):
-                form = TweetForm(request.POST)
-                if form.is_valid():
+    def post(self, request):
+        form = TweetForm(request.POST)
+        if form.is_valid():
 
-                        tweet = form.save(commit=False)
-                        tweet.user = request.user
-                        tweet.save()
+            tweet = form.save(commit=False)
+            tweet.user = request.user
+            tweet.save()
 
-                        
-                        content = form.cleaned_data['tweet_content']
-                        form = TweetForm()
-                        messages.info(request, f"Tweet sent")
-                        return redirect('main:homepage')
-                        
+            
+            content = form.cleaned_data['tweet_content']
+            form = TweetForm()
+            messages.info(request, f"Tweet sent")
+            return redirect('main:homepage')
+                
 
-                args = {'form': form, 'content': content}
-                return render(request, self.template_name, args)
+        args = {'form': form, 'content': content}
+        return render(request, self.template_name, args)
 
 
 def register(request):
